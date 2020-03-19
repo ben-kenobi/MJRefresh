@@ -44,7 +44,10 @@ static BOOL respondsToAdjustedContentInset_;
         inset.top -= (self.adjustedContentInset.top - self.contentInset.top);
     }
 #endif
-    self.contentInset = inset;
+    
+    if(!UIEdgeInsetsEqualToEdgeInsets(inset, self.contentInset)){
+        self.contentInset = inset;
+    }
 }
 
 - (CGFloat)mj_insetT
