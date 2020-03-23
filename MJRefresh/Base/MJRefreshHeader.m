@@ -80,7 +80,9 @@ NSString * const MJRefreshHeaderRefreshingBoundsKey = @"MJRefreshHeaderRefreshin
     }
     
     // 跳转到下一个控制器时，contentInset可能会变
-    _scrollViewOriginalInset = self.scrollView.mj_inset;
+    UIEdgeInsets oinsets = self.scrollView.mj_inset;
+    oinsets.top = 0; // TODO: YF 为修复inset错乱bug，暂时写死0
+    _scrollViewOriginalInset = oinsets;
     
     // 当前的contentOffset
     CGFloat offsetY = self.scrollView.mj_offsetY;

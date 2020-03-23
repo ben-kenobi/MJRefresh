@@ -44,7 +44,7 @@ static BOOL respondsToAdjustedContentInset_;
         inset.top -= (self.adjustedContentInset.top - self.contentInset.top);
     }
 #endif
-    
+    inset.top  = MAX(inset.top, 0); //  // TODO: YF 为修复inset错乱bug,inset禁止小于0
     if(!UIEdgeInsetsEqualToEdgeInsets(inset, self.contentInset)){
         self.contentInset = inset;
     }
