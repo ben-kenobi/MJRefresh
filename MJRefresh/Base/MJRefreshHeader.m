@@ -137,7 +137,7 @@ NSString * const MJRefreshHeaderRefreshingBoundsKey = @"MJRefreshHeaderRefreshin
         // 由于修改 Inset 会导致 self.pullingPercent 联动设置 self.alpha, 故提前获取 alpha 值, 后续用于还原 alpha 动画
         CGFloat viewAlpha = self.alpha;
         
-        self.scrollView.mj_insetT += self.insetTDelta;
+        self.scrollView.mj_insetT = self.scrollViewOriginalInset.top;;
         // 禁用交互, 如果不禁用可能会引起渲染问题.
         self.scrollView.userInteractionEnabled = NO;
 
@@ -207,16 +207,18 @@ NSString * const MJRefreshHeaderRefreshingBoundsKey = @"MJRefreshHeaderRefreshin
     
     if ([anim isEqual:[self.scrollView.layer animationForKey:MJRefreshHeaderRefreshingBoundsKey]]) {
         [self.scrollView.layer removeAnimationForKey:MJRefreshHeaderRefreshingBoundsKey];
-        
-        CGFloat top = self.scrollViewOriginalInset.top + self.mj_h;
-        self.scrollView.mj_insetT = top;
-        // 设置最终滚动位置
-        CGPoint offset = self.scrollView.contentOffset;
-        offset.y = -top;
-        [self.scrollView setContentOffset:offset animated:NO];
-        
-        self.scrollView.userInteractionEnabled = YES;
-        [self executeRefreshingCallback];
+        if(self.state == MJRefreshStateRefreshing){
+            
+            CGFloat top = self.scrollViewOriginalInset.top + self.mj_h;
+            self.scrollView.mj_insetT = top;
+            // 设置最终滚动位置
+            CGPoint offset = self.scrollView.contentOffset;
+            offset.y = -top;
+            [self.scrollView setContentOffset:offset animated:NO];
+            
+            self.scrollView.userInteractionEnabled = YES;
+            [self executeRefreshingCallback];
+        }
     }
 }
 
